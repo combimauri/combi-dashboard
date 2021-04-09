@@ -22,7 +22,7 @@
       <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/dashboard/list">List</a>
+            <a routerLink="/dashboards">List</a>
           </li>
         </ul>
       </li>
@@ -41,9 +41,7 @@
       </div>
     </nz-header>
     <nz-content>
-      <div class="inner-content">
-        <router-outlet></router-outlet>
-      </div>
+      <router-outlet></router-outlet>
     </nz-content>
   </nz-layout>
 </nz-layout>

@@ -1,10 +1,8 @@
-.demo-loadmore-list {
-  min-height: 350px;
+.actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
-.loadmore {
-  text-align: center;
-  margin-top: 12px;
-  height: 32px;
-  line-height: 32px;
+.list {
+  flex: 1;
 }

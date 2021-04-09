@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.inner-content {
+  padding: 12px;
+  margin: 6px 6px 0;
+  background: #fff;
+
+  &:last-child {
+    margin-bottom: 6px;
+  }
+}

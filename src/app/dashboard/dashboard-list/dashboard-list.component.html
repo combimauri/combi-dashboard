@@ -1,36 +1,81 @@
-<nz-list class="demo-loadmore-list" [nzLoading]="initLoading">
-  <nz-list-item *ngFor="let item of list">
-    <ng-container *ngIf="!item.loading">
-      <nz-list-item-meta
-        nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-        nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-      >
-        <nz-list-item-meta-title>
-          <a href="https://ng.ant.design">{{ item.name.last }}</a>
-        </nz-list-item-meta-title>
-      </nz-list-item-meta>
-      content
-      <ul nz-list-item-actions>
-        <nz-list-item-action
-          ><a (click)="edit(item)">edit</a></nz-list-item-action
-        >
-        <nz-list-item-action
-          ><a (click)="edit(item)">more</a></nz-list-item-action
-        >
-      </ul>
-    </ng-container>
-    <nz-skeleton
-      *ngIf="item.loading"
-      [nzAvatar]="true"
-      [nzActive]="true"
-      [nzTitle]="false"
-      [nzLoading]="true"
-    >
-    </nz-skeleton>
-  </nz-list-item>
-  <div class="loadmore" nz-list-load-more>
-    <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">
-      loading more
+<div class="content">
+  <div class="inner-content actions">
+    <button nz-button nzType="primary" (click)="openCreateDashboardModal()">
+      Add Dashboard
     </button>
   </div>
-</nz-list>
+  <div class="inner-content list">
+    <nz-list [nzLoading]="loadingDashboards">
+      <ng-container *ngIf="dashboardList$ | async as dashboardList">
+        <nz-list-item *ngFor="let item of dashboardList">
+          <nz-list-item-meta
+            [nzAvatar]="dashboardIcon"
+            [nzDescription]="item.description"
+          >
+            <nz-list-item-meta-title>
+              <a href="https://ng.ant.design">{{ item.name }}</a>
+            </nz-list-item-meta-title>
+          </nz-list-item-meta>
+          <ul nz-list-item-actions>
+            <nz-list-item-action>
+              <a [routerLink]="['/dashboards', item.id]">see</a>
+            </nz-list-item-action>
+            <nz-list-item-action>
+              <a (click)="showDeleteDashboardConfirm(item)">delete</a>
+            </nz-list-item-action>
+          </ul>
+        </nz-list-item>
+        <nz-list-empty *ngIf="dashboardList.length === 0"></nz-list-empty>
+      </ng-container>
+    </nz-list>
+  </div>
+</div>
+
+<ng-template #dashboardIcon>
+  <nz-avatar [nzSize]="44" nzIcon="dashboard"></nz-avatar>
+</ng-template>
+
+<nz-modal
+  nzTitle="Add Dashboard"
+  [nzOkLoading]="creatingDashboard"
+  [nzOkDisabled]="dashboardForm.invalid"
+  (nzOnCancel)="cancelDashboardCreation()"
+  (nzOnOk)="createDashboard()"
+  [(nzVisible)]="isAddModalVisible"
+>
+  <ng-container *nzModalContent>
+    <form
+      nz-form
+      class="login-form"
+      [formGroup]="dashboardForm"
+      (ngSubmit)="createDashboard()"
+      (keyup.enter)="createDashboard()"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input dashboard name">
+          <nz-input-group>
+            <input
+              #nameInput
+              nz-input
+              formControlName="name"
+              placeholder="Name"
+              type="text"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group>
+            <input
+              nz-input
+              formControlName="description"
+              placeholder="Description"
+              type="text"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

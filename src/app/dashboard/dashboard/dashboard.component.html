@@ -1,0 +1,18 @@
+<div class="content">
+  <div class="inner-content actions">
+    <nz-select
+      class="select"
+      nzPlaceHolder="Choose Dashboard"
+      [nzLoading]="loadingDashboards"
+      [(ngModel)]="selectedDashboardId"
+    >
+      <nz-option-group nzLabel="Dashboards">
+        <ng-container *ngFor="let item of dashboardList$ | async">
+          <nz-option [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+        </ng-container>
+      </nz-option-group>
+    </nz-select>
+    <button nz-button nzType="primary">Add Widget</button>
+  </div>
+  <div class="inner-content dashboard-content"></div>
+</div>

@@ -1,11 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { Observable, Subject, timer } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 
-const count = 5;
-const fakeDataUrl =
-  'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
+import { Dashboard } from '../../core/models/dashboard.model';
+import { DashboardService } from '../../core/services/dashboard.service';
 
 @Component({
   selector: 'combi-dashboard-list',
@@ -13,38 +15,67 @@ const fakeDataUrl =
   styleUrls: ['./dashboard-list.component.scss'],
 })
 export class DashboardListComponent implements OnInit {
-  initLoading = true; // bug
-  loadingMore = false;
-  data: any[] = [];
-  list: Array<{ loading: boolean; name: any }> = [];
+  @ViewChild('nameInput') nameInput: ElementRef;
+  loadingDashboards = true;
+  isAddModalVisible = false;
+  creatingDashboard = false;
+  dashboardForm: FormGroup;
+  dashboardList$: Observable<Array<Dashboard>>;
+  private unsubscribe$ = new Subject<void>();
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {}
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private modalService: NzModalService,
+    private dashboardService: DashboardService
+  ) {}
 
   ngOnInit(): void {
-    this.getData((res: any) => {
-      this.data = res.results;
-      this.list = res.results;
-      this.initLoading = false;
+    this.dashboardForm = this.formBuilder.group({
+      id: '',
+      name: ['', [Validators.required]],
+      description: '',
+    });
+    this.dashboardList$ = this.dashboardService
+      .getDashboardList()
+      .pipe(finalize(() => (this.loadingDashboards = false)));
+  }
+
+  openCreateDashboardModal(): void {
+    this.isAddModalVisible = true;
+
+    timer(300)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.nameInput.nativeElement.focus());
+  }
+
+  createDashboard(): void {
+    if (this.dashboardForm.valid) {
+      this.creatingDashboard = true;
+
+      this.dashboardService
+        .addDashboard({ ...this.dashboardForm.value })
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(({ id }) => this.router.navigate(['/dashboards', id]));
+    }
+  }
+
+  showDeleteDashboardConfirm({ id, name }: Dashboard): void {
+    this.modalService.confirm({
+      nzTitle: 'Are you sure you want to delete this dashboard?',
+      nzContent: `<b style="color: red;">You are about to delete the ${name} dashboard</b>`,
+      nzOkText: 'Yes',
+      nzCancelText: 'No',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => this.dashboardService.deleteDashboard(id),
     });
   }
 
-  getData(callback: (res: any) => void): void {
-    this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
-  }
+  cancelDashboardCreation(): void {
+    this.isAddModalVisible = false;
+    this.creatingDashboard = false;
 
-  onLoadMore(): void {
-    this.loadingMore = true;
-    this.list = this.data.concat(
-      [...Array(count)].fill({}).map(() => ({ loading: true, name: {} }))
-    );
-    this.http.get(fakeDataUrl).subscribe((res: any) => {
-      this.data = this.data.concat(res.results);
-      this.list = [...this.data];
-      this.loadingMore = false;
-    });
-  }
-
-  edit(item: any): void {
-    this.msg.success(item.email);
+    this.dashboardForm.reset();
   }
 }
