@@ -8,6 +8,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
+  {
+    path: 'widgets',
+    loadChildren: () =>
+      import('./widget/widget.module').then((m) => m.WidgetModule),
+  },
 ];
 
 @NgModule({

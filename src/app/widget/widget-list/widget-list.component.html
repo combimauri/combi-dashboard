@@ -1,0 +1,81 @@
+<div class="content">
+  <div class="inner-content actions">
+    <button nz-button nzType="primary" (click)="openCreateWidgetModal()">
+      Add Widget
+    </button>
+  </div>
+  <div class="inner-content list">
+    <nz-list [nzLoading]="loadingWidgets">
+      <ng-container *ngIf="widgetList$ | async as widgetList">
+        <nz-list-item *ngFor="let item of widgetList">
+          <nz-list-item-meta
+            [nzAvatar]="widgetIcon"
+            [nzDescription]="item.description"
+          >
+            <nz-list-item-meta-title>
+              <a href="https://ng.ant.design">{{ item.name }}</a>
+            </nz-list-item-meta-title>
+          </nz-list-item-meta>
+          <ul nz-list-item-actions>
+            <nz-list-item-action>
+              <a [routerLink]="['/widgets', item.id]">see</a>
+            </nz-list-item-action>
+            <nz-list-item-action>
+              <a (click)="showDeleteWidgetConfirm(item)">delete</a>
+            </nz-list-item-action>
+          </ul>
+        </nz-list-item>
+        <nz-list-empty *ngIf="widgetList.length === 0"></nz-list-empty>
+      </ng-container>
+    </nz-list>
+  </div>
+</div>
+
+<ng-template #widgetIcon>
+  <nz-avatar [nzSize]="44" nzIcon="pie-chart"></nz-avatar>
+</ng-template>
+
+<nz-modal
+  nzTitle="Add Widget"
+  [nzOkLoading]="creatingWidget"
+  [nzOkDisabled]="widgetForm.invalid"
+  (nzOnCancel)="cancelWidgetCreation()"
+  (nzOnOk)="createWidget()"
+  [(nzVisible)]="isAddModalVisible"
+>
+  <ng-container *nzModalContent>
+    <form
+      nz-form
+      class="login-form"
+      [formGroup]="widgetForm"
+      (ngSubmit)="createWidget()"
+      (keyup.enter)="createWidget()"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input widget name">
+          <nz-input-group>
+            <input
+              #nameInput
+              nz-input
+              formControlName="name"
+              placeholder="Name"
+              type="text"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group>
+            <input
+              nz-input
+              formControlName="description"
+              placeholder="Description"
+              type="text"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

@@ -13,7 +13,7 @@ export class DashboardService {
   private dashboardList: Array<Dashboard> = [
     {
       id: '20a62da2-d2ba-4456-819d-d700e50fe7f2',
-      name: 'Default',
+      name: 'Default Dashboard',
       description: 'This is the default dashboard',
     },
   ];

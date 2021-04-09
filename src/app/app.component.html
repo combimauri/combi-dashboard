@@ -19,12 +19,21 @@
       nzMode="inline"
       [nzInlineCollapsed]="isCollapsed"
     >
-      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/dashboards">List</a>
-          </li>
-        </ul>
+      <li
+        nz-menu-item
+        routerLink="/dashboards"
+        [nzSelected]="currentPath === 'dashboards'"
+      >
+        <i nz-icon nzType="dashboard"></i>
+        <span>Dashboards</span>
+      </li>
+      <li
+        nz-menu-item
+        routerLink="/widgets"
+        [nzSelected]="currentPath === 'widgets'"
+      >
+        <i nz-icon nzType="pie-chart"></i>
+        <span>Widgets</span>
       </li>
     </ul>
   </nz-sider>
