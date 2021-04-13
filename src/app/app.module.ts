@@ -10,7 +10,6 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
 import { IconsProviderModule } from './icons-provider/icons-provider.module';
 import { NgZorroAntdModule } from './ng-zorro-antd/ng-zorro-antd';
 

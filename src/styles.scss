@@ -21,6 +21,7 @@ gridster .gridster-row {
 
 .ant-card-body {
   height: calc(100% - 48px);
+  overflow: auto;
 }
 
 .content {

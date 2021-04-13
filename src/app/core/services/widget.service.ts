@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Widget } from '../models/widget.model';
 import { ChartWidgetComponent } from '../../widget/chart-widget/chart-widget.component';
+import { TableWidgetComponent } from '../../widget/table-widget/table-widget.component';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,12 @@ export class WidgetService {
       name: 'Chart Widget',
       description: 'This is a chart widget',
       type: ChartWidgetComponent,
+    },
+    {
+      id: 'd6acbe4a-a38f-4a41-b3df-69148d4acfaa',
+      name: 'Table Widget',
+      description: 'This is a table widget',
+      type: TableWidgetComponent,
     },
   ];
 

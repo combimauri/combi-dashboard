@@ -47,7 +47,7 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
     maxCols: 12,
     minCols: 12,
     maxRows: 100,
-    minRows: 6,
+    minRows: 3,
     mobileBreakpoint: 768,
     pushItems: true,
     resizable: {
