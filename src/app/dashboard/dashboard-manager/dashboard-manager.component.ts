@@ -32,6 +32,7 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
   loadingWidgets = true;
   loadingDashboards = true;
   isWidgetsModalVisible = false;
+  isDashboardEmpty = true;
   gridOptions: GridsterConfig = {
     displayGrid: 'onDrag&Resize',
     draggable: {
@@ -87,11 +88,14 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
     );
     const component = this.dashboardContainer.createComponent(componentFactory);
     const { instance } = component;
+    this.isDashboardEmpty = false;
 
     instance.initializeWidget(widget);
-    instance.destroy$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => component.destroy());
+    instance.destroy$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      component.destroy();
+
+      this.isDashboardEmpty = this.dashboardContainer.length === 0;
+    });
     this.dismissAddWidget();
   }
 
