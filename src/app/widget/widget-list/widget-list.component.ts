@@ -6,6 +6,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { Observable, Subject, timer } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
+import { ChartWidgetComponent } from '../chart-widget/chart-widget.component';
 import { Widget } from '../../core/models/widget.model';
 import { WidgetService } from '../../core/services/widget.service';
 
@@ -16,11 +17,11 @@ import { WidgetService } from '../../core/services/widget.service';
 })
 export class WidgetListComponent implements OnInit {
   @ViewChild('nameInput') nameInput: ElementRef;
+  widgetForm: FormGroup;
+  widgetList$: Observable<Array<Widget>>;
   loadingWidgets = true;
   isAddModalVisible = false;
   creatingWidget = false;
-  widgetForm: FormGroup;
-  widgetList$: Observable<Array<Widget>>;
   private unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -34,6 +35,7 @@ export class WidgetListComponent implements OnInit {
     this.widgetForm = this.formBuilder.group({
       id: '',
       name: ['', [Validators.required]],
+      type: ChartWidgetComponent,
       description: '',
     });
     this.widgetList$ = this.widgetService

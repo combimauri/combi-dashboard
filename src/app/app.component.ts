@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subject } from 'rxjs';
 
+import * as Highcharts from 'highcharts';
+import { Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
 @Component({

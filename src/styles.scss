@@ -1,3 +1,28 @@
+gridster,
+gridster-preview {
+  background-color: white !important;
+}
+
+gridster .gridster-column {
+  border-left: 1px dashed #f0f0f0 !important;
+  border-right: 1px dashed #f0f0f0 !important;
+}
+
+gridster .gridster-row {
+  border-top: 1px dashed #f0f0f0 !important;
+  border-bottom: 1px dashed #f0f0f0 !important;
+}
+
+.widget-card .ant-card-extra {
+  width: 100%;
+  margin-left: 0;
+  padding: 8px 0;
+}
+
+.ant-card-body {
+  height: calc(100% - 48px);
+}
+
 .content {
   height: 100%;
   display: flex;
@@ -13,4 +38,12 @@
   &:last-child {
     margin-bottom: 6px;
   }
+}
+
+.main-content {
+  flex: 1;
+}
+
+.page-header {
+  margin: 6px 6px 0;
 }

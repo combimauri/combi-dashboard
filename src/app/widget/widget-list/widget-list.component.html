@@ -1,10 +1,13 @@
 <div class="content">
-  <div class="inner-content actions">
-    <button nz-button nzType="primary" (click)="openCreateWidgetModal()">
-      Add Widget
-    </button>
-  </div>
-  <div class="inner-content list">
+  <nz-page-header class="page-header" [nzGhost]="false">
+    <nz-page-header-title>Widgets</nz-page-header-title>
+    <nz-page-header-extra>
+      <button nz-button nzType="primary" (click)="openCreateWidgetModal()">
+        Add Widget
+      </button>
+    </nz-page-header-extra>
+  </nz-page-header>
+  <div class="inner-content main-content">
     <nz-list [nzLoading]="loadingWidgets">
       <ng-container *ngIf="widgetList$ | async as widgetList">
         <nz-list-item *ngFor="let item of widgetList">
@@ -13,7 +16,7 @@
             [nzDescription]="item.description"
           >
             <nz-list-item-meta-title>
-              <a href="https://ng.ant.design">{{ item.name }}</a>
+              <a [routerLink]="['/widgets', item.id]">{{ item.name }}</a>
             </nz-list-item-meta-title>
           </nz-list-item-meta>
           <ul nz-list-item-actions>

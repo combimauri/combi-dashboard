@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Widget } from '../models/widget.model';
+import { ChartWidgetComponent } from '../../widget/chart-widget/chart-widget.component';
+import { TableWidgetComponent } from '../../widget/table-widget/table-widget.component';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +15,15 @@ export class WidgetService {
   private widgetList: Array<Widget> = [
     {
       id: '67677631-35b3-4411-aed5-aad67eadafc2',
-      name: 'Default Widget',
-      description: 'This is the default widget',
+      name: 'Chart Widget',
+      description: 'This is a chart widget',
+      type: ChartWidgetComponent,
+    },
+    {
+      id: '77677631-35b3-4411-aed5-aad67eadafc2',
+      name: 'Table Widget',
+      description: 'This is a table widget',
+      type: TableWidgetComponent,
     },
   ];
 

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardListComponent } from './dashboard-list/dashboard-list.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardManagerComponent } from './dashboard-manager/dashboard-manager.component';
 
 const routes: Routes = [
   {
@@ -11,8 +11,8 @@ const routes: Routes = [
   },
   {
     path: ':id',
-    component: DashboardComponent
-  }
+    component: DashboardManagerComponent,
+  },
 ];
 
 @NgModule({

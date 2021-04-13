@@ -16,11 +16,11 @@ import { DashboardService } from '../../core/services/dashboard.service';
 })
 export class DashboardListComponent implements OnInit {
   @ViewChild('nameInput') nameInput: ElementRef;
+  dashboardForm: FormGroup;
+  dashboardList$: Observable<Array<Dashboard>>;
   loadingDashboards = true;
   isAddModalVisible = false;
   creatingDashboard = false;
-  dashboardForm: FormGroup;
-  dashboardList$: Observable<Array<Dashboard>>;
   private unsubscribe$ = new Subject<void>();
 
   constructor(

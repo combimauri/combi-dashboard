@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { WidgetListComponent } from './widget-list/widget-list.component';
-import { WidgetComponent } from './widget/widget.component';
+import { WidgetManagerComponent } from './widget-manager/widget-manager.component';
 
 const routes: Routes = [
   {
@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: ':id',
-    component: WidgetComponent,
+    component: WidgetManagerComponent,
   },
 ];
 

@@ -1,0 +1,26 @@
+<gridster-item [item]="gridItem">
+  <nz-card class="widget-card" [nzExtra]="actions">
+    <ng-container #widgetContainer></ng-container>
+  </nz-card>
+  <ng-template #actions>
+    <div class="widget-card-header drag-handler">
+      <strong class="widget-card-title">
+        {{ widgetName }}
+      </strong>
+      <div>
+        <button
+          nz-button
+          nz-dropdown
+          [nzDropdownMenu]="menu"
+        >
+          <i nz-icon nzType="more"></i>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="deleteWidget()">delete</li>
+          </ul>
+        </nz-dropdown-menu>
+      </div>
+    </div>
+  </ng-template>
+</gridster-item>
