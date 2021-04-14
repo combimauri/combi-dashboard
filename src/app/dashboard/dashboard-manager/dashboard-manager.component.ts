@@ -1,7 +1,9 @@
+import { DOCUMENT } from '@angular/common';
 import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
+  Inject,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -10,7 +12,12 @@ import {
 import { ActivatedRoute } from '@angular/router';
 
 import 'gridstack/dist/h5/gridstack-dd-native';
-import { GridItemHTMLElement, GridStack, GridStackNode } from 'gridstack';
+import {
+  GridItemHTMLElement,
+  GridStack,
+  GridStackElement,
+  GridStackNode,
+} from 'gridstack';
 import { Observable, Subject, timer } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
@@ -40,6 +47,7 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
     private componentFactoryResolver: ComponentFactoryResolver,
     private dashboardService: DashboardService,
@@ -127,11 +135,27 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
     this.isDashboardEmpty = false;
 
     instance.initializeWidget(widget);
-    instance.destroy$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      containerRef.destroy();
+    instance.destroy$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.deleteWidget(containerRef));
+  }
 
-      this.isDashboardEmpty = this.dashboardContainer.length === 0;
-    });
+  private deleteWidget(
+    containerRef: ComponentRef<WidgetContainerComponent>
+  ): void {
+    const { componentId } = containerRef.instance;
+    const widgetElement = this.document.getElementById(
+      componentId
+    ) as GridStackElement;
+    const widgetIndex = this.widgetContainers.findIndex(
+      (widgetContainer) => widgetContainer.componentId === componentId
+    );
+
+    this.grid.removeWidget(widgetElement);
+    containerRef.destroy();
+    this.widgetContainers.splice(widgetIndex, 1);
+
+    this.isDashboardEmpty = this.dashboardContainer.length === 0;
   }
 
   private makeGridWidget(widgetComponent: WidgetContainerComponent): void {
