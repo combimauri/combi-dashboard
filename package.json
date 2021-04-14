@@ -19,7 +19,7 @@
     "@angular/platform-browser": "~11.2.9",
     "@angular/platform-browser-dynamic": "~11.2.9",
     "@angular/router": "~11.2.9",
-    "angular-gridster2": "^11.1.5",
+    "gridstack": "^4.2.0",
     "highcharts": "^9.0.1",
     "highcharts-angular": "^2.10.0",
     "ng-zorro-antd": "^11.3.0",

@@ -2,12 +2,13 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
+  HostBinding,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 
-import { GridsterItem } from 'angular-gridster2';
 import { Subject } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Widget } from '../../core/models/widget.model';
 import { WidgetComponent } from '../../core/models/widget-component.model';
@@ -18,16 +19,14 @@ import { WidgetComponent } from '../../core/models/widget-component.model';
   styleUrls: ['./widget-container.component.scss'],
 })
 export class WidgetContainerComponent {
+  @HostBinding('id') componentId = uuidv4();
+  @HostBinding('attr.gs-w') gsW = '6';
+  @HostBinding('attr.gs-h') gsH = '4';
+  @HostBinding('class.grid-stack-item') itemClass = true;
   @ViewChild('widgetContainer', { read: ViewContainerRef, static: true })
   widgetContainer: ViewContainerRef;
   widgetName: string;
-  widgetComponent: ComponentRef<WidgetComponent>;
-  gridItem: GridsterItem = {
-    x: 0,
-    y: 0,
-    cols: 6,
-    rows: 3
-  };
+  widgetComponentRef: ComponentRef<WidgetComponent>;
   destroy$ = new Subject<void>();
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
@@ -37,9 +36,13 @@ export class WidgetContainerComponent {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       type
     );
-    this.gridItem.widgetComponent = this.widgetContainer.createComponent(
+    this.widgetComponentRef = this.widgetContainer.createComponent(
       componentFactory
-    ).instance;
+    );
+  }
+
+  reflowWidget(): void {
+    this.widgetComponentRef.instance.reflow();
   }
 
   deleteWidget(): void {

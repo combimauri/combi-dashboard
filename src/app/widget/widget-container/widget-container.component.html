@@ -1,4 +1,4 @@
-<gridster-item [item]="gridItem">
+<div class="grid-stack-item-content">
   <nz-card class="widget-card" [nzExtra]="actions">
     <ng-container #widgetContainer></ng-container>
   </nz-card>
@@ -8,11 +8,7 @@
         {{ widgetName }}
       </strong>
       <div>
-        <button
-          nz-button
-          nz-dropdown
-          [nzDropdownMenu]="menu"
-        >
+        <button nz-button nz-dropdown [nzDropdownMenu]="menu">
           <i nz-icon nzType="more"></i>
         </button>
         <nz-dropdown-menu #menu="nzDropdownMenu">
@@ -23,4 +19,4 @@
       </div>
     </div>
   </ng-template>
-</gridster-item>
+</div>

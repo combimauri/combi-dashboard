@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentFactoryResolver,
+  ComponentRef,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -8,8 +9,9 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { GridsterConfig, GridType } from 'angular-gridster2';
-import { Observable, Subject } from 'rxjs';
+import 'gridstack/dist/h5/gridstack-dd-native';
+import { GridItemHTMLElement, GridStack, GridStackNode } from 'gridstack';
+import { Observable, Subject, timer } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 import { Dashboard } from '../../core/models/dashboard.model';
@@ -26,35 +28,15 @@ import { WidgetContainerComponent } from '../../widget/widget-container/widget-c
 export class DashboardManagerComponent implements OnInit, OnDestroy {
   @ViewChild('dashboardContainer', { read: ViewContainerRef })
   dashboardContainer: ViewContainerRef;
+  grid: GridStack;
   selectedDashboardId: string | null;
   widgetList$: Observable<Array<Widget>>;
   dashboardList$: Observable<Array<Dashboard>>;
+  widgetContainers: Array<WidgetContainerComponent> = [];
   loadingWidgets = true;
   loadingDashboards = true;
   isWidgetsModalVisible = false;
   isDashboardEmpty = true;
-  gridOptions: GridsterConfig = {
-    displayGrid: 'onDrag&Resize',
-    draggable: {
-      enabled: true,
-      ignoreContent: true,
-    },
-    gridType: GridType.ScrollVertical,
-    itemResizeCallback: (gridsterItem) => {
-      if (gridsterItem.widgetComponent?.reflow) {
-        gridsterItem.widgetComponent.reflow();
-      }
-    },
-    maxCols: 12,
-    minCols: 12,
-    maxRows: 100,
-    minRows: 3,
-    mobileBreakpoint: 768,
-    pushItems: true,
-    resizable: {
-      enabled: true,
-    },
-  };
   private unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -65,6 +47,7 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.initializeGrid();
     this.route.paramMap
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((paramMap) => (this.selectedDashboardId = paramMap.get('id')));
@@ -83,24 +66,77 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
   }
 
   addWidget(widget: Widget): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      WidgetContainerComponent
-    );
-    const component = this.dashboardContainer.createComponent(componentFactory);
-    const { instance } = component;
-    this.isDashboardEmpty = false;
+    const widgetContainerRef = this.createWidgetContainerRef();
+    const { instance } = widgetContainerRef;
 
-    instance.initializeWidget(widget);
-    instance.destroy$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      component.destroy();
-
-      this.isDashboardEmpty = this.dashboardContainer.length === 0;
-    });
+    this.widgetContainers.push(instance);
+    this.initializeWidget(widget, widgetContainerRef);
+    this.makeGridWidget(instance);
     this.dismissAddWidget();
   }
 
   dismissAddWidget(): void {
     this.loadingWidgets = true;
     this.isWidgetsModalVisible = false;
+  }
+
+  private initializeGrid(): void {
+    this.grid = GridStack.init({
+      cellHeight: '100px',
+      handle: '.drag-handler',
+      margin: 8,
+    });
+
+    this.listenToGridEvents();
+  }
+
+  private listenToGridEvents(): void {
+    this.grid.on('added', (event, items) => {
+      items = items as Array<GridStackNode>;
+
+      items.forEach((item) => this.reflowWidget(item.el?.id));
+    });
+    this.grid.on('resizestop', (event, element) =>
+      this.reflowWidget((element as GridItemHTMLElement)?.id)
+    );
+  }
+
+  private reflowWidget(widgetId: string | undefined): void {
+    if (widgetId) {
+      const widgetContainer = this.widgetContainers.find(
+        (container) => container.componentId === widgetId
+      );
+
+      widgetContainer?.reflowWidget();
+    }
+  }
+
+  private createWidgetContainerRef(): ComponentRef<WidgetContainerComponent> {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      WidgetContainerComponent
+    );
+
+    return this.dashboardContainer.createComponent(componentFactory);
+  }
+
+  private initializeWidget(
+    widget: Widget,
+    containerRef: ComponentRef<WidgetContainerComponent>
+  ): void {
+    const { instance } = containerRef;
+    this.isDashboardEmpty = false;
+
+    instance.initializeWidget(widget);
+    instance.destroy$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      containerRef.destroy();
+
+      this.isDashboardEmpty = this.dashboardContainer.length === 0;
+    });
+  }
+
+  private makeGridWidget(widgetComponent: WidgetContainerComponent): void {
+    timer(100).subscribe(() =>
+      this.grid.makeWidget(`#${widgetComponent.componentId}`)
+    );
   }
 }

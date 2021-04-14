@@ -21,10 +21,10 @@
     </nz-page-header-extra>
   </nz-page-header>
   <div class="inner-content main-content grid-content">
-    <gridster [options]="gridOptions">
+    <div class="grid-stack">
       <nz-list-empty *ngIf="isDashboardEmpty"></nz-list-empty>
       <ng-container #dashboardContainer></ng-container>
-    </gridster>
+    </div>
   </div>
 </div>
 

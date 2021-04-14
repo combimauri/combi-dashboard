@@ -1,17 +1,4 @@
-gridster,
-gridster-preview {
-  background-color: white !important;
-}
-
-gridster .gridster-column {
-  border-left: 1px dashed #f0f0f0 !important;
-  border-right: 1px dashed #f0f0f0 !important;
-}
-
-gridster .gridster-row {
-  border-top: 1px dashed #f0f0f0 !important;
-  border-bottom: 1px dashed #f0f0f0 !important;
-}
+@import '~gridstack/dist/gridstack.min.css';
 
 .widget-card .ant-card-extra {
   width: 100%;
