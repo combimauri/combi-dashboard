@@ -1,23 +1,44 @@
 <div class="content">
   <nz-page-header class="page-header" nzBackIcon [nzGhost]="false">
     <nz-page-header-title>
-      <nz-select
-        class="select"
-        nzPlaceHolder="Choose Dashboard"
-        [nzLoading]="loadingDashboards"
-        [(ngModel)]="selectedDashboardId"
-      >
-        <nz-option-group nzLabel="Dashboards">
-          <ng-container *ngFor="let item of dashboardList$ | async">
-            <nz-option [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
-          </ng-container>
-        </nz-option-group>
-      </nz-select>
+      <nz-space class="wrap">
+        <nz-select
+          *nzSpaceItem
+          class="select"
+          nzPlaceHolder="Choose Dashboard"
+          [nzLoading]="loadingDashboards"
+          [(ngModel)]="selectedDashboard"
+        >
+          <nz-option-group nzLabel="Dashboards">
+            <ng-container *ngFor="let item of dashboardList$ | async">
+              <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
+            </ng-container>
+          </nz-option-group>
+        </nz-select>
+        <button *nzSpaceItem nz-button nzType="default" disabled>
+          <i nz-icon nzType="edit"></i>
+        </button>
+        <button *nzSpaceItem nz-button nzType="default" disabled>
+          <i nz-icon nzType="save"></i>
+        </button>
+      </nz-space>
     </nz-page-header-title>
     <nz-page-header-extra>
-      <button nz-button nzType="primary" (click)="isWidgetsModalVisible = true">
-        Add Widget
-      </button>
+      <nz-space class="wrap">
+        <nz-range-picker *nzSpaceItem [(ngModel)]="dateRange"></nz-range-picker>
+        <button *nzSpaceItem nz-button nzType="primary" disabled>
+          Paste Widget
+        </button>
+        <button
+          *nzSpaceItem
+          nz-button
+          nzType="primary"
+          [disabled]="!selectedDashboard"
+          (click)="isWidgetsModalVisible = true"
+        >
+          Add Widget
+        </button>
+      </nz-space>
     </nz-page-header-extra>
   </nz-page-header>
   <div class="inner-content main-content grid-content">

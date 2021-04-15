@@ -46,6 +46,7 @@ export class WidgetContainerComponent {
   }
 
   deleteWidget(): void {
+    this.widgetContainer.clear();
     this.destroy$.next();
   }
 }

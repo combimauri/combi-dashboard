@@ -5,8 +5,12 @@ import { map } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Widget } from '../models/widget.model';
-import { ChartWidgetComponent } from '../../widget/chart-widget/chart-widget.component';
-import { TableWidgetComponent } from '../../widget/table-widget/table-widget.component';
+import { WidgetType, WidgetData } from '../models/widget-data.model';
+import { CalendarWidgetComponent } from '../../widget/widget-types/calendar-widget/calendar-widget.component';
+import { ChartWidgetComponent } from '../../widget/widget-types/chart-widget/chart-widget.component';
+import { ListWidgetComponent } from '../../widget/widget-types/list-widget/list-widget.component';
+import { TableWidgetComponent } from '../../widget/widget-types/table-widget/table-widget.component';
+import { TimelineWidgetComponent } from '../../widget/widget-types/timeline-widget/timeline-widget.component';
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +30,26 @@ export class WidgetService {
       type: TableWidgetComponent,
     },
   ];
+  private widgetDataList: Array<WidgetData> = [
+    { widgetType: WidgetType.CALENDAR, componentType: CalendarWidgetComponent },
+    { widgetType: WidgetType.CHART, componentType: ChartWidgetComponent },
+    { widgetType: WidgetType.LIST, componentType: ListWidgetComponent },
+    { widgetType: WidgetType.TABLE, componentType: TableWidgetComponent },
+    { widgetType: WidgetType.TIMELINE, componentType: TimelineWidgetComponent },
+  ];
+
+  getWidget(id: string): Observable<Widget | undefined> {
+    return timer(500).pipe(
+      map(() => this.widgetList.find((widget) => widget.id === id))
+    );
+  }
 
   getWidgetList(): Observable<Array<Widget>> {
     return timer(500).pipe(map(() => this.widgetList));
+  }
+
+  getWidgetDataList(): Array<WidgetData> {
+    return this.widgetDataList;
   }
 
   addWidget(widget: Widget): Observable<Widget> {

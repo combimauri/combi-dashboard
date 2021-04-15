@@ -3,7 +3,7 @@
     <nz-page-header-title>Widgets</nz-page-header-title>
     <nz-page-header-extra>
       <button nz-button nzType="primary" (click)="openCreateWidgetModal()">
-        Add Widget
+        Create Widget
       </button>
     </nz-page-header-extra>
   </nz-page-header>
@@ -39,7 +39,7 @@
 </ng-template>
 
 <nz-modal
-  nzTitle="Add Widget"
+  nzTitle="Create Widget"
   [nzOkLoading]="creatingWidget"
   [nzOkDisabled]="widgetForm.invalid"
   (nzOnCancel)="cancelWidgetCreation()"

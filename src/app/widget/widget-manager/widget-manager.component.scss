@@ -1,0 +1,48 @@
+.inner-content {
+  padding: 0;
+}
+
+.widget-manager-content {
+  height: 100%;
+
+  nz-header,
+  nz-sider,
+  nz-content {
+    background-color: white;
+    padding: 20px;
+  }
+
+  nz-header {
+    border-bottom: 2px solid #f0f0f0;
+    padding: 12px;
+  }
+
+  nz-sider {
+    border-right: 2px solid #f0f0f0;
+    padding: 12px;
+
+    .select {
+      width: 100%;
+    }
+  }
+}
+
+.header-customize {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  @media only screen and (min-width: 768px) {
+    display: none;
+  }
+}
+
+.sider-customize {
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
+}
+
+.type-label {
+  margin-right: 4px;
+}

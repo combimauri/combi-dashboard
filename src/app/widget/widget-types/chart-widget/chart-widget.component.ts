@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { timer } from 'rxjs';
 
-import { WidgetComponent } from '../../core/models/widget-component.model';
+import { WidgetComponent } from '../../../core/models/widget-component.model';
 
 type HighchartsChart = any;
 
@@ -30,8 +30,6 @@ export class ChartWidgetComponent implements WidgetComponent {
   };
 
   reflow(): void {
-    timer(100).subscribe(() => {
-      this.chartInstance.reflow();
-    });
+    timer(100).subscribe(() => this.chartInstance.reflow());
   }
 }

@@ -18,6 +18,12 @@ export class DashboardService {
     },
   ];
 
+  getDashboard(id: string): Observable<Dashboard | undefined> {
+    return timer(500).pipe(
+      map(() => this.dashboardList.find((dashboard) => dashboard.id === id))
+    );
+  }
+
   getDashboardList(): Observable<Array<Dashboard>> {
     return timer(500).pipe(map(() => this.dashboardList));
   }

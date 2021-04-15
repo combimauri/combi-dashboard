@@ -3,7 +3,7 @@
     <nz-page-header-title>Dashboards</nz-page-header-title>
     <nz-page-header-extra>
       <button nz-button nzType="primary" (click)="openCreateDashboardModal()">
-        Add Dashboard
+        Create Dashboard
       </button>
     </nz-page-header-extra>
   </nz-page-header>
@@ -39,7 +39,7 @@
 </ng-template>
 
 <nz-modal
-  nzTitle="Add Dashboard"
+  nzTitle="Create Dashboard"
   [nzOkLoading]="creatingDashboard"
   [nzOkDisabled]="dashboardForm.invalid"
   (nzOnCancel)="cancelDashboardCreation()"

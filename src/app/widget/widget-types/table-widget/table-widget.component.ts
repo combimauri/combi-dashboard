@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { WidgetComponent } from '../../core/models/widget-component.model';
+import { WidgetComponent } from '../../../core/models/widget-component.model';
 
 @Component({
   selector: 'combi-table-widget',

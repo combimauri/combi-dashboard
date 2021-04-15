@@ -1,4 +1,4 @@
-@import '~gridstack/dist/gridstack.min.css';
+@import "~gridstack/dist/gridstack.min.css";
 
 .widget-card .ant-card-extra {
   width: 100%;
@@ -34,4 +34,12 @@
 
 .page-header {
   margin: 6px 6px 0;
+}
+
+.select {
+  width: 200px;
+}
+
+.wrap {
+  flex-wrap: wrap;
 }

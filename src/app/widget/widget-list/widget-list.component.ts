@@ -6,7 +6,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { Observable, Subject, timer } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
-import { ChartWidgetComponent } from '../chart-widget/chart-widget.component';
+import { ChartWidgetComponent } from '../widget-types/chart-widget/chart-widget.component';
 import { Widget } from '../../core/models/widget.model';
 import { WidgetService } from '../../core/services/widget.service';
 
@@ -35,7 +35,7 @@ export class WidgetListComponent implements OnInit {
     this.widgetForm = this.formBuilder.group({
       id: '',
       name: ['', [Validators.required]],
-      type: ChartWidgetComponent,
+      type: null,
       description: '',
     });
     this.widgetList$ = this.widgetService

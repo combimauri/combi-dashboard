@@ -36,7 +36,8 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
   @ViewChild('dashboardContainer', { read: ViewContainerRef })
   dashboardContainer: ViewContainerRef;
   grid: GridStack;
-  selectedDashboardId: string | null;
+  selectedDashboard: Dashboard;
+  dateRange: string;
   widgetList$: Observable<Array<Widget>>;
   dashboardList$: Observable<Array<Dashboard>>;
   widgetContainers: Array<WidgetContainerComponent> = [];
@@ -58,7 +59,20 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
     this.initializeGrid();
     this.route.paramMap
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((paramMap) => (this.selectedDashboardId = paramMap.get('id')));
+      .subscribe((paramMap) => {
+        const selectedDashboardId = paramMap.get('id');
+
+        if (selectedDashboardId) {
+          this.dashboardService
+            .getDashboard(selectedDashboardId)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((dashboard) => {
+              if (dashboard) {
+                this.selectedDashboard = dashboard;
+              }
+            });
+        }
+      });
 
     this.dashboardList$ = this.dashboardService
       .getDashboardList()

@@ -1,1 +1,71 @@
-<p>widget-manager works!</p>
+<div class="content">
+  <nz-page-header class="page-header" nzBackIcon [nzGhost]="false">
+    <nz-page-header-title>
+      <!-- {{ selectedWidget?.name }} -->
+      <nz-space class="wrap">
+        <nz-select
+          *nzSpaceItem
+          class="select"
+          nzPlaceHolder="Choose Dashboard"
+          [nzLoading]="loadingWidgets"
+          [ngModel]="selectedWidget"
+          (ngModelChange)="selectWidget($event)"
+        >
+          <nz-option-group nzLabel="Dashboards">
+            <ng-container *ngFor="let item of widgetList$ | async">
+              <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
+            </ng-container>
+          </nz-option-group>
+        </nz-select>
+        <button *nzSpaceItem nz-button nzType="default" disabled>
+          <i nz-icon nzType="edit"></i>
+        </button>
+        <button *nzSpaceItem nz-button nzType="default" disabled>
+          <i nz-icon nzType="save"></i>
+        </button>
+      </nz-space>
+    </nz-page-header-title>
+  </nz-page-header>
+  <div class="inner-content main-content">
+    <nz-layout class="widget-manager-content">
+      <nz-header class="header-customize">
+        <ng-container [ngTemplateOutlet]="customizeOptions"></ng-container>
+      </nz-header>
+      <nz-layout>
+        <nz-sider nzWidth="256px" class="sider-customize">
+          <h3>Customize Widget</h3>
+          <br />
+          <ng-container [ngTemplateOutlet]="customizeOptions"></ng-container>
+        </nz-sider>
+        <nz-content>
+          <nz-list-empty *ngIf="!selectedWidget?.type"></nz-list-empty>
+          <combi-widget-editor
+            #widgetEditor
+            [hidden]="!selectedWidget?.type"
+          ></combi-widget-editor>
+        </nz-content>
+      </nz-layout>
+    </nz-layout>
+  </div>
+</div>
+
+<ng-template #customizeOptions>
+  <ng-container *ngIf="selectedWidget">
+    <label class="type-label">Widget Type:</label>
+    <nz-select
+      class="select"
+      nzPlaceHolder="Choose Widget Type"
+      [ngModel]="selectedWidget.type"
+      (ngModelChange)="selectWidgetType($event)"
+    >
+      <nz-option-group nzLabel="Widgets">
+        <ng-container *ngFor="let item of widgetDataList">
+          <nz-option
+            [nzValue]="item.componentType"
+            [nzLabel]="item.widgetType"
+          ></nz-option>
+        </ng-container>
+      </nz-option-group>
+    </nz-select>
+  </ng-container>
+</ng-template>
