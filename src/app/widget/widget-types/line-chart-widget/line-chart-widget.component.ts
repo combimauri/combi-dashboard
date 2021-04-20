@@ -8,11 +8,11 @@ import { WidgetComponent } from '../../../core/models/widget-component.model';
 type HighchartsChart = any;
 
 @Component({
-  selector: 'combi-chart-widget',
-  templateUrl: './chart-widget.component.html',
-  styleUrls: ['./chart-widget.component.scss'],
+  selector: 'combi-line-chart-widget',
+  templateUrl: './line-chart-widget.component.html',
+  styleUrls: ['./line-chart-widget.component.scss'],
 })
-export class ChartWidgetComponent implements WidgetComponent {
+export class LineChartWidgetComponent implements WidgetComponent {
   chartInstance: HighchartsChart;
   Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {

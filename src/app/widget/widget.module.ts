@@ -7,7 +7,7 @@ import { WidgetListComponent } from './widget-list/widget-list.component';
 import { WidgetManagerComponent } from './widget-manager/widget-manager.component';
 import { WidgetEditorComponent } from './widget-manager/widget-editor/widget-editor.component';
 import { CalendarWidgetModule } from './widget-types/calendar-widget/calendar-widget.module';
-import { ChartWidgetModule } from './widget-types/chart-widget/chart-widget.module';
+import { LineChartWidgetModule } from './widget-types/line-chart-widget/line-chart-widget.module';
 import { ListWidgetModule } from './widget-types/list-widget/list-widget.module';
 import { TableWidgetModule } from './widget-types/table-widget/table-widget.module';
 import { TimelineWidgetModule } from './widget-types/timeline-widget/timeline-widget.module';
@@ -26,7 +26,7 @@ import { NgZorroAntdModule } from '../ng-zorro-antd/ng-zorro-antd';
     NgZorroAntdModule,
     WidgetRoutingModule,
     CalendarWidgetModule,
-    ChartWidgetModule,
+    LineChartWidgetModule,
     ListWidgetModule,
     TableWidgetModule,
     TimelineWidgetModule,

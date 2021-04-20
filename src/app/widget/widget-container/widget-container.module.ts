@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WidgetContainerComponent } from './widget-container.component';
-import { ChartWidgetModule } from '../widget-types/chart-widget/chart-widget.module';
+import { LineChartWidgetModule } from '../widget-types/line-chart-widget/line-chart-widget.module';
 import { TableWidgetModule } from '../widget-types/table-widget/table-widget.module';
 import { NgZorroAntdModule } from '../../ng-zorro-antd/ng-zorro-antd';
 
@@ -11,7 +11,7 @@ import { NgZorroAntdModule } from '../../ng-zorro-antd/ng-zorro-antd';
   imports: [
     CommonModule,
     NgZorroAntdModule,
-    ChartWidgetModule,
+    LineChartWidgetModule,
     TableWidgetModule,
   ],
   exports: [WidgetContainerComponent],

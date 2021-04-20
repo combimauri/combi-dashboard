@@ -9,7 +9,7 @@ import { Widget } from '../models/widget.model';
 import { WidgetComponent } from '../models/widget-component.model';
 import { WidgetType } from '../models/widget-type.enum';
 import { CalendarWidgetComponent } from '../../widget/widget-types/calendar-widget/calendar-widget.component';
-import { ChartWidgetComponent } from '../../widget/widget-types/chart-widget/chart-widget.component';
+import { LineChartWidgetComponent } from '../../widget/widget-types/line-chart-widget/line-chart-widget.component';
 import { ListWidgetComponent } from '../../widget/widget-types/list-widget/list-widget.component';
 import { TableWidgetComponent } from '../../widget/widget-types/table-widget/table-widget.component';
 import { TimelineWidgetComponent } from '../../widget/widget-types/timeline-widget/timeline-widget.component';
@@ -21,9 +21,9 @@ export class WidgetService {
   private widgetList: Array<Widget> = [
     {
       id: '67677631-35b3-4411-aed5-aad67eadafc2',
-      name: 'Chart Widget',
-      description: 'This is a chart widget',
-      type: WidgetType.CHART,
+      name: 'Line Chart Widget',
+      description: 'This is a line chart widget',
+      type: WidgetType.LINE_CHART,
     },
     {
       id: 'd6acbe4a-a38f-4a41-b3df-69148d4acfaa',
@@ -39,7 +39,7 @@ export class WidgetService {
       label: 'Calendar',
       componentType: CalendarWidgetComponent,
     },
-    [WidgetType.CHART]: { label: 'Chart', componentType: ChartWidgetComponent },
+    [WidgetType.LINE_CHART]: { label: 'Line Chart', componentType: LineChartWidgetComponent },
     [WidgetType.LIST]: { label: 'List', componentType: ListWidgetComponent },
     [WidgetType.TABLE]: { label: 'Table', componentType: TableWidgetComponent },
     [WidgetType.TIMELINE]: {

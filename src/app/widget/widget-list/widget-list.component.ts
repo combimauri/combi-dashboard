@@ -6,7 +6,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { Observable, Subject, timer } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
-import { ChartWidgetComponent } from '../widget-types/chart-widget/chart-widget.component';
+import { LineChartWidgetComponent } from '../widget-types/line-chart-widget/line-chart-widget.component';
 import { Widget } from '../../core/models/widget.model';
 import { WidgetService } from '../../core/services/widget.service';
 

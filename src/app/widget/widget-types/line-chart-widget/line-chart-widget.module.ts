@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { HighchartsChartModule } from 'highcharts-angular';
 
-import { ChartWidgetComponent } from './chart-widget.component';
+import { LineChartWidgetComponent } from './line-chart-widget.component';
 
 @NgModule({
-  declarations: [ChartWidgetComponent],
+  declarations: [LineChartWidgetComponent],
   imports: [CommonModule, HighchartsChartModule],
-  exports: [ChartWidgetComponent],
+  exports: [LineChartWidgetComponent],
 })
-export class ChartWidgetModule {}
+export class LineChartWidgetModule {}

@@ -1,6 +1,6 @@
 export enum WidgetType {
   CALENDAR = 'Calendar',
-  CHART = 'Chart',
+  LINE_CHART = 'Line Chart',
   LIST = 'List',
   TABLE = 'Table',
   TIMELINE = 'Timeline',
