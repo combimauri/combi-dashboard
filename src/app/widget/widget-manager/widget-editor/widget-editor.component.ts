@@ -18,13 +18,15 @@ export class WidgetEditorComponent {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
-  initializeWidget({ type }: Widget): void {
-    this.widgetContainer.clear();
+  initializeWidget({ componentType }: Widget): void {
+    if (componentType) {
+      this.widgetContainer.clear();
 
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      type
-    );
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+        componentType
+      );
 
-    this.widgetContainer.createComponent(componentFactory);
+      this.widgetContainer.createComponent(componentFactory);
+    }
   }
 }

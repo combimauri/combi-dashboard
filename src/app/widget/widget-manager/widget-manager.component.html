@@ -1,7 +1,6 @@
 <div class="content">
   <nz-page-header class="page-header" nzBackIcon [nzGhost]="false">
     <nz-page-header-title>
-      <!-- {{ selectedWidget?.name }} -->
       <nz-space class="wrap">
         <nz-select
           *nzSpaceItem
@@ -38,10 +37,10 @@
           <ng-container [ngTemplateOutlet]="customizeOptions"></ng-container>
         </nz-sider>
         <nz-content>
-          <nz-list-empty *ngIf="!selectedWidget?.type"></nz-list-empty>
+          <nz-list-empty *ngIf="!selectedWidget?.componentType"></nz-list-empty>
           <combi-widget-editor
             #widgetEditor
-            [hidden]="!selectedWidget?.type"
+            [hidden]="!selectedWidget?.componentType"
           ></combi-widget-editor>
         </nz-content>
       </nz-layout>
@@ -60,10 +59,7 @@
     >
       <nz-option-group nzLabel="Widgets">
         <ng-container *ngFor="let item of widgetDataList">
-          <nz-option
-            [nzValue]="item.componentType"
-            [nzLabel]="item.widgetType"
-          ></nz-option>
+          <nz-option [nzValue]="item.type" [nzLabel]="item.label"></nz-option>
         </ng-container>
       </nz-option-group>
     </nz-select>

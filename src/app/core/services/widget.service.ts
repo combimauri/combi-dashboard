@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 
+import { cloneDeep } from 'lodash';
 import { Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Widget } from '../models/widget.model';
-import { WidgetType, WidgetData } from '../models/widget-data.model';
+import { WidgetComponent } from '../models/widget-component.model';
+import { WidgetType } from '../models/widget-type.enum';
 import { CalendarWidgetComponent } from '../../widget/widget-types/calendar-widget/calendar-widget.component';
 import { ChartWidgetComponent } from '../../widget/widget-types/chart-widget/chart-widget.component';
 import { ListWidgetComponent } from '../../widget/widget-types/list-widget/list-widget.component';
@@ -21,35 +23,84 @@ export class WidgetService {
       id: '67677631-35b3-4411-aed5-aad67eadafc2',
       name: 'Chart Widget',
       description: 'This is a chart widget',
-      type: ChartWidgetComponent,
+      type: WidgetType.CHART,
     },
     {
       id: 'd6acbe4a-a38f-4a41-b3df-69148d4acfaa',
       name: 'Table Widget',
       description: 'This is a table widget',
-      type: TableWidgetComponent,
+      type: WidgetType.TABLE,
     },
   ];
-  private widgetDataList: Array<WidgetData> = [
-    { widgetType: WidgetType.CALENDAR, componentType: CalendarWidgetComponent },
-    { widgetType: WidgetType.CHART, componentType: ChartWidgetComponent },
-    { widgetType: WidgetType.LIST, componentType: ListWidgetComponent },
-    { widgetType: WidgetType.TABLE, componentType: TableWidgetComponent },
-    { widgetType: WidgetType.TIMELINE, componentType: TimelineWidgetComponent },
-  ];
+  private widgetTypes: {
+    [type: string]: { label: string; componentType: Type<WidgetComponent> };
+  } = {
+    [WidgetType.CALENDAR]: {
+      label: 'Calendar',
+      componentType: CalendarWidgetComponent,
+    },
+    [WidgetType.CHART]: { label: 'Chart', componentType: ChartWidgetComponent },
+    [WidgetType.LIST]: { label: 'List', componentType: ListWidgetComponent },
+    [WidgetType.TABLE]: { label: 'Table', componentType: TableWidgetComponent },
+    [WidgetType.TIMELINE]: {
+      label: 'Timeline',
+      componentType: TimelineWidgetComponent,
+    },
+  };
 
   getWidget(id: string): Observable<Widget | undefined> {
     return timer(500).pipe(
-      map(() => this.widgetList.find((widget) => widget.id === id))
+      map(() => {
+        const selectedWidget = this.widgetList.find(
+          (widget) => widget.id === id
+        );
+
+        if (selectedWidget) {
+          return { ...selectedWidget };
+        }
+
+        return selectedWidget;
+      })
     );
   }
 
   getWidgetList(): Observable<Array<Widget>> {
-    return timer(500).pipe(map(() => this.widgetList));
+    return timer(500).pipe(
+      map(() =>
+        cloneDeep(this.widgetList).map((widget) => {
+          widget.componentType = this.getWidgetComponentType(widget.type);
+
+          return widget;
+        })
+      )
+    );
   }
 
-  getWidgetDataList(): Array<WidgetData> {
-    return this.widgetDataList;
+  getWidgetDataList(): Array<{ label: string; type: WidgetType }> {
+    const result: Array<{ label: string; type: WidgetType }> = [];
+
+    Object.keys(this.widgetTypes)
+      .map((type) => {
+        return type as WidgetType;
+      })
+      .forEach((type) => {
+        result.push({
+          label: this.widgetTypes[type].label,
+          type,
+        });
+      });
+
+    return result;
+  }
+
+  getWidgetTypes(): {
+    [type: string]: { label: string; componentType: Type<WidgetComponent> };
+  } {
+    return this.widgetTypes;
+  }
+
+  getWidgetComponentType(type: WidgetType): Type<WidgetComponent> {
+    return this.widgetTypes[type]?.componentType;
   }
 
   addWidget(widget: Widget): Observable<Widget> {

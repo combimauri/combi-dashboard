@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { cloneDeep } from 'lodash';
 import { Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,12 +21,22 @@ export class DashboardService {
 
   getDashboard(id: string): Observable<Dashboard | undefined> {
     return timer(500).pipe(
-      map(() => this.dashboardList.find((dashboard) => dashboard.id === id))
+      map(() => {
+        const selectedDashboard = this.dashboardList.find(
+          (dashboard) => dashboard.id === id
+        );
+
+        if (selectedDashboard) {
+          return { ...selectedDashboard };
+        }
+
+        return selectedDashboard;
+      })
     );
   }
 
   getDashboardList(): Observable<Array<Dashboard>> {
-    return timer(500).pipe(map(() => this.dashboardList));
+    return timer(500).pipe(map(() => cloneDeep(this.dashboardList)));
   }
 
   addDashboard(dashboard: Dashboard): Observable<Dashboard> {

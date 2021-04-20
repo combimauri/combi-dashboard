@@ -31,14 +31,16 @@ export class WidgetContainerComponent {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
-  initializeWidget({ name, type }: Widget): void {
-    this.widgetName = name;
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      type
-    );
-    this.widgetComponentRef = this.widgetContainer.createComponent(
-      componentFactory
-    );
+  initializeWidget({ name, componentType }: Widget): void {
+    if (componentType) {
+      this.widgetName = name;
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+        componentType
+      );
+      this.widgetComponentRef = this.widgetContainer.createComponent(
+        componentFactory
+      );
+    }
   }
 
   reflowWidget(): void {

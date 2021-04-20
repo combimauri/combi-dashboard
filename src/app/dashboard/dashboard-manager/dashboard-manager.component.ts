@@ -19,7 +19,7 @@ import {
   GridStackNode,
 } from 'gridstack';
 import { Observable, Subject, timer } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil, tap } from 'rxjs/operators';
 
 import { Dashboard } from '../../core/models/dashboard.model';
 import { Widget } from '../../core/models/widget.model';
@@ -63,23 +63,23 @@ export class DashboardManagerComponent implements OnInit, OnDestroy {
         const selectedDashboardId = paramMap.get('id');
 
         if (selectedDashboardId) {
-          this.dashboardService
-            .getDashboard(selectedDashboardId)
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((dashboard) => {
-              if (dashboard) {
-                this.selectedDashboard = dashboard;
+          this.dashboardList$ = this.dashboardService.getDashboardList().pipe(
+            tap((dashboards) => {
+              const selectedDashboard = dashboards.find(
+                (dashboard) => (dashboard.id = selectedDashboardId)
+              );
+
+              if (selectedDashboard) {
+                this.selectedDashboard = selectedDashboard;
               }
-            });
+            }),
+            finalize(() => (this.loadingDashboards = false))
+          );
+          this.widgetList$ = this.widgetService
+            .getWidgetList()
+            .pipe(finalize(() => (this.loadingWidgets = false)));
         }
       });
-
-    this.dashboardList$ = this.dashboardService
-      .getDashboardList()
-      .pipe(finalize(() => (this.loadingDashboards = false)));
-    this.widgetList$ = this.widgetService
-      .getWidgetList()
-      .pipe(finalize(() => (this.loadingWidgets = false)));
   }
 
   ngOnDestroy(): void {
